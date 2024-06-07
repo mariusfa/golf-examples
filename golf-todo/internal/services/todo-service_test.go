@@ -3,7 +3,7 @@ package services
 import "testing"
 
 func TestGetTodos(t *testing.T) {
-	todoRepositoryFake := &todoRepositoryFake{Todos: []Todo{
+	todoRepositoryFake := &TodoRepositoryFake{Todos: []Todo{
 		{Id: "1", Title: "Buy milk"},
 	}}
 	todoService := &TodoService{todoRepositoryFake}
@@ -26,7 +26,7 @@ func TestGetTodos(t *testing.T) {
 }
 
 func TestInsertTodo(t *testing.T) {
-	todoRepositoryFake := &todoRepositoryFake{Todos: []Todo{}}
+	todoRepositoryFake := &TodoRepositoryFake{Todos: []Todo{}}
 	todoService := &TodoService{todoRepositoryFake}
 	todo := Todo{Title: "Buy milk"}
 	err := todoService.Insert(todo)
@@ -44,15 +44,3 @@ func TestInsertTodo(t *testing.T) {
 	}
 }
 
-type todoRepositoryFake struct {
-	Todos []Todo
-}
-
-func (t *todoRepositoryFake) GetTodos() ([]Todo, error) {
-	return t.Todos, nil
-}
-
-func (t *todoRepositoryFake) Insert(todo Todo) error {
-	t.Todos = append(t.Todos, todo)
-	return nil
-}
