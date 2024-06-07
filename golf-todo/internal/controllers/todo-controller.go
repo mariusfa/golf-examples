@@ -19,9 +19,13 @@ func NewTodoController(todoService TodoService) *TodoController {
 }
 
 func (t *TodoController) RegisterRoutes(router *http.ServeMux) {
-	handler := t.GetTodos()
-	handler = middleware.AccessLogMiddleware(handler, &accesslog.AccessLog)
-	router.Handle("/todo", handler)
+	getTodosHandler := t.GetTodos()
+	getTodosHandler = middleware.AccessLogMiddleware(getTodosHandler, &accesslog.AccessLog)
+	router.Handle("GET /todo", getTodosHandler)
+
+	insertTodoHandler := t.InsertTodo()
+	insertTodoHandler = middleware.AccessLogMiddleware(insertTodoHandler, &accesslog.AccessLog)
+	router.Handle("POST /todo", insertTodoHandler)
 }
 
 func (t *TodoController) GetTodos() http.Handler {
@@ -39,5 +43,22 @@ func (t *TodoController) GetTodos() http.Handler {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
 		w.Write(jsonTodos)
+	})
+}
+
+func (t *TodoController) InsertTodo() http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		var todo services.Todo
+		if err := json.NewDecoder(r.Body).Decode(&todo); err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
+		if err := t.todoService.Insert(todo); err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		w.WriteHeader(http.StatusCreated)
 	})
 }

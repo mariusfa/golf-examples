@@ -5,7 +5,9 @@ type TodoService struct {
 }
 
 func (t *TodoService) GetTodos() ([]Todo, error) {
-	return []Todo{
-		{Id: "1", Title: "Buy milk"},
-	}, nil
+	return t.todoRepository.GetTodos()
+}
+
+func (t *TodoService) Insert(todo Todo) error {
+	return t.todoRepository.Insert(todo)
 }
