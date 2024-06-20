@@ -11,7 +11,7 @@ func TestAppStartup(t *testing.T) {
 	todoRepositoryFake := &services.TodoRepositoryFake{Todos: []services.Todo{}}
 	router := setupRouter(todoRepositoryFake)
 
-	r := httptest.NewRequest("GET", "/todos", nil)
+	r := httptest.NewRequest("GET", "/todo", nil)
 	w := httptest.NewRecorder()
 	router.ServeHTTP(w, r)
 
