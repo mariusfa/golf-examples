@@ -12,8 +12,8 @@ import (
 
 	"github.com/mariusfa/golf/config"
 	"github.com/mariusfa/golf/database"
-	accesslog "github.com/mariusfa/golf/logging/access-log"
-	applog "github.com/mariusfa/golf/logging/app-log"
+	"github.com/mariusfa/golf/logging/accesslog"
+	"github.com/mariusfa/golf/logging/applog"
 )
 
 func setupRouter(todoRepository services.TodoRepository) *http.ServeMux {
@@ -46,8 +46,8 @@ const (
 )
 
 func main() {
-	applog.AppLog = applog.NewAppLogger(APP_NAME)
-	accesslog.AccessLog = accesslog.NewAccessLogger(APP_NAME)
+	applog.SetAppName(APP_NAME)
+	accesslog.SetAppName(APP_NAME)
 
 	var appConfig appconfig.Config
 	err := config.GetConfig(ENV_FILE, &appConfig)
@@ -66,11 +66,14 @@ func main() {
 	}
 
 	db, err := setupDb(dbConfig)
+	if err != nil {
+		panic(err)
+	}
 
 	todoRepository := repositories.NewTodoRepository(db)
 	router := setupRouter(todoRepository)
 
 	addr := fmt.Sprintf(":%s", appConfig.Port)
-	applog.AppLog.Info(fmt.Sprintf("Starting app %s on %s", APP_NAME, addr))
+	applog.Info(fmt.Sprintf("Starting app %s on %s", APP_NAME, addr))
 	http.ListenAndServe(addr, router)
 }

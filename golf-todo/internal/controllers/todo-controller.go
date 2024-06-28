@@ -6,7 +6,7 @@ import (
 
 	"todo/internal/services"
 
-	accesslog "github.com/mariusfa/golf/logging/access-log"
+	"github.com/mariusfa/golf/logging/accesslog"
 	"github.com/mariusfa/golf/middleware"
 )
 
@@ -20,11 +20,11 @@ func NewTodoController(todoService TodoService) *TodoController {
 
 func (t *TodoController) RegisterRoutes(router *http.ServeMux) {
 	getTodosHandler := t.GetTodos()
-	getTodosHandler = middleware.AccessLogMiddleware(getTodosHandler, &accesslog.AccessLog)
+	getTodosHandler = middleware.AccessLogMiddleware(getTodosHandler, accesslog.GetLogger())
 	router.Handle("GET /todo", getTodosHandler)
 
 	insertTodoHandler := t.InsertTodo()
-	insertTodoHandler = middleware.AccessLogMiddleware(insertTodoHandler, &accesslog.AccessLog)
+	insertTodoHandler = middleware.AccessLogMiddleware(insertTodoHandler, accesslog.GetLogger())
 	router.Handle("POST /todo", insertTodoHandler)
 }
 
