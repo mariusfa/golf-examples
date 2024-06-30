@@ -17,8 +17,19 @@ type UserClaims struct {
 }
 
 func ParseToken(token string, secret string) (string, error) {
+	var userClaims UserClaims
+	_, err := jwt.ParseWithClaims(token, &userClaims, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
+		}
+		return []byte(secret), nil
+	})
 
-	return "", nil
+	if err != nil {
+		return "", fmt.Errorf("Error parsing token: %w", err)
+	}
+
+	return userClaims.UserId, nil
 }
 
 func CreateToken(userId string, secret string) (string, error) {
