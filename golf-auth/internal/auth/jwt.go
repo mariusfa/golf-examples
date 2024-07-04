@@ -32,31 +32,38 @@ func ParseToken(token string, secret string) (string, error) {
 	return userClaims.UserId, nil
 }
 
-func CreateToken(userId string, secret string) (string, error) {
+func CreateToken(userId string, secret string, expires *time.Time) (string, error) {
 	now := jwt.NewNumericDate(time.Now())
-	expires := jwt.NewNumericDate(time.Now().Add(24 * time.Hour))
+	var expiresAt *jwt.NumericDate
+
+	if expires == nil {
+		defaultExpires := time.Now().Add(24 * time.Hour)
+		expiresAt = jwt.NewNumericDate(defaultExpires)
+	} else {
+		expiresAt = jwt.NewNumericDate(*expires)
+	}
+
 	claims := UserClaims{
-		userId,
-		jwt.RegisteredClaims{
-			ExpiresAt: expires,
+		UserId: userId,
+		RegisteredClaims: jwt.RegisteredClaims{
+			ExpiresAt: expiresAt,
 			IssuedAt:  now,
 			NotBefore: now,
 		},
 	}
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	signedToken, err := token.SignedString([]byte(secret))
-	if err != nil {
-		return "", fmt.Errorf("Error signing token: %w", err)
-	}
 
+	signedToken, err := createSignedTokenWithClaims(secret, claims)
+	if err != nil {
+		return "", fmt.Errorf("Error creating signed token: %w", err)
+	}
 	return signedToken, nil
 }
 
-func createTokenWithClaims(userId string, secret string, userClaims UserClaims) (string, error) {
+func createSignedTokenWithClaims(secret string, userClaims UserClaims) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, userClaims)
 	signedToken, err := token.SignedString([]byte(secret))
 	if err != nil {
-		return "", fmt.Errorf("Error signing token: %w", err)
+		return "", err
 	}
 
 	return signedToken, nil
