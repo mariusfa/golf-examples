@@ -1,6 +1,12 @@
 github.com/golang-jwt/jwt/v5 v5.2.1 h1:OuVbFODueb089Lh128TAcimifWaLhJwVflnrgM17wHk=
 github.com/golang-jwt/jwt/v5 v5.2.1/go.mod h1:pqrtFR0X4osieyHYxtmOUWsAWrfe1Q5UVIyoH402zdk=
+github.com/google/uuid v1.6.0 h1:NIvaJDMOsjHA8n1jAhLSgzrAzy1Hgr+hNrb57e+94F0=
+github.com/google/uuid v1.6.0/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
 github.com/joho/godotenv v1.5.1 h1:7eLL/+HRGLY0ldzfGMeQkb7vMd0as4CfYvUVzLqw0N0=
 github.com/joho/godotenv v1.5.1/go.mod h1:f4LDr5Voq0i2e/R5DDNOoa2zzDfwtkZa6DnEwAbqwq4=
 github.com/mariusfa/golf v0.11.0 h1:cCrMMeSmyDe3uL+Vwzdi485mSznBFrXCnLowaSybR2o=
 github.com/mariusfa/golf v0.11.0/go.mod h1:hjBTrn1SI0jom9PU5GOZEy/g5PL3DZ0M4BlffG5G/aE=
+github.com/mariusfa/golf v0.12.0 h1:AusGjf9mhy9AK4dS8cGMR5rgdCrnfknRTs5qDPX65/s=
+github.com/mariusfa/golf v0.12.0/go.mod h1:QKFWtcDs20hm1xpPR+uNDPMayRskuCcd2Td5OKpe2Ss=
+github.com/mariusfa/golf v0.13.0 h1:o7ABlJONAPA89FLpT++3llelZiVhV+AmEpN476W7enA=
+github.com/mariusfa/golf v0.13.0/go.mod h1:QKFWtcDs20hm1xpPR+uNDPMayRskuCcd2Td5OKpe2Ss=
