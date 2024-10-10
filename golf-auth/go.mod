@@ -4,7 +4,7 @@ go 1.22.2
 
 require (
 	github.com/golang-jwt/jwt/v5 v5.2.1
-	github.com/mariusfa/golf v0.13.0
+	github.com/mariusfa/golf v0.15.0
 )
 
 require (
